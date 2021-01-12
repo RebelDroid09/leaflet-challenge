@@ -1,5 +1,5 @@
 var newYorkCoords = [40.73, -74.0059];
-var mapZoomLevel = 3;
+var mapZoomLevel = 5;
 
 var earthquakeUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
@@ -16,4 +16,8 @@ function createMap(stations) {
         id: "mapbox/streets-v11",
         accessToken: API_KEY
       });
-};
+      
+      var myMap = L.map("map-id", {
+        center: newYorkCoords,
+        zoom: mapZoomLevel
+      });
