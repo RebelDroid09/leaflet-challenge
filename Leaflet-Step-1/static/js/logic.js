@@ -100,7 +100,7 @@ function createQuakeMarkers(features){
             fillColor: mycolor,
             fillOpacity: 0.75,
             radius: 10000 * mag
-          });
+          }).bindPopup("<h3>" + features[i].properties.place + "</h3><h3>" + features[i].properties.time + "</h3>");
           
           quakeGroup.push(newCircle);
     }
