@@ -20,19 +20,18 @@ function createMap(data) {
         maxZoom: 18,
         id: "streets-v11",
         accessToken: API_KEY
-      });
+    });      
       
-      
-      var myMap = L.map("mapid", {
+    var myMap = L.map("mapid", {
         center: usaCoords,
         zoom: mapZoomLevel
-      });
+    });
 
-      myTileLayer.addTo(myMap);
+    myTileLayer.addTo(myMap);
 
-      var quakeMarkers = createQuakeMarkers(data.features);
+    var quakeMarkers = createQuakeMarkers(data.features);
 
-      var quakeGroup = L.layerGroup(quakeMarkers);
+    var quakeGroup = L.layerGroup(quakeMarkers);
 
     var overlayMaps = {
         "Quake Markers": quakeGroup
@@ -42,6 +41,22 @@ function createMap(data) {
     L.control.layers(null, overlayMaps, {
         collapsed: false
     }).addTo(myMap);
+
+    // Create a legend to display information about our map
+    var info = L.control({
+        position: "bottomright"
+    });
+  
+    // When the layer control is added, insert a div with the class of "legend"
+    info.onAdd = function() {
+        var div = L.DomUtil.create("div", "legend");
+        return div;
+    };
+
+    // Add the info legend to the map
+    info.addTo(myMap);  
+
+    updateLegend();
 }
 
 function createQuakeMarkers(features){
@@ -60,30 +75,30 @@ function createQuakeMarkers(features){
         mag = features[i].properties.mag;
         depth = features[i].geometry.coordinates[2];
         
-        if (depth < 10)
+        if (depth <= 10)
         {
             mycolor = depth1;
         }
-        else if (depth >= 10 && depth < 30){
+        else if (depth > 10 && depth <= 30){
             mycolor = depth2;
         }
-        else if (depth >= 30 && depth < 50){
+        else if (depth > 30 && depth <= 50){
             mycolor = depth3;
         }
-        else if (depth >= 50 && depth < 730){
+        else if (depth > 50 && depth <= 730){
             mycolor = depth4;
         }
-        else if (depth >= 70 && depth < 90){
+        else if (depth > 70 && depth <= 90){
             mycolor = depth5;
         }
-        else if (depth >= 90){
+        else if (depth > 90){
             mycolor = depth6;
         }
 
         var newCircle = L.circle([lat, lon], {
             color: "#000000",
             fillColor: mycolor,
-            fillOpacity: 0.5,
+            fillOpacity: 0.75,
             radius: 10000 * mag
           });
           
@@ -91,4 +106,16 @@ function createQuakeMarkers(features){
     }
 
     return quakeGroup;
+}
+
+function updateLegend()
+{
+    document.querySelector(".legend").innerHTML = [
+        "<div class='box depth1'></div><p class='depth1'>-10 - 10</p>",
+        "<div class='box depth2'></div><p class='depth2'>10 - 30</p>",
+        "<div class='box depth3'></div><p class='depth3'>30 - 50</p>",
+        "<div class='box depth4'></div><p class='depth4'>50 - 70</p>",
+        "<div class='box depth5'></div><p class='depth5'>70 - 90</p>",
+        "<div class='box depth6'></div><p class='depth6'>90+</p>"
+      ].join("");    
 }

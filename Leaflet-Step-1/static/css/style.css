@@ -9,3 +9,35 @@ html {
   height: 100%;
   width: 100%;
 }
+
+.box {
+  float: left;
+  height: 5px;
+  width: 5px;
+  margin-bottom: 1px;
+  border: 1px solid black;
+  clear: both;
+}
+
+.depth1 {
+  background-color: '#90ee90';
+}
+
+.depth2 {
+  background-color: '#adff2f';
+}
+
+.depth3 {
+  background-color: '#ffff00';
+}
+.depth4 {
+  background-color: '#ffae42';
+}
+
+.depth5 {
+  background-color: '#ff4500';
+}
+
+.depth6 {
+  background-color: '#FF0000';
+}
