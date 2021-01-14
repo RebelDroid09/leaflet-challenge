@@ -67,6 +67,7 @@ function createQuakeMarkers(features){
     var depth;
     var mycolor;
     var quakeGroup = [];
+    var d = new Date(0);
 
     for(var i = 0; i < features.length; i++)
     {
@@ -95,12 +96,14 @@ function createQuakeMarkers(features){
             mycolor = depth6;
         }
 
+        d = new Date(0);
+
         var newCircle = L.circle([lat, lon], {
             color: "#000000",
             fillColor: mycolor,
             fillOpacity: 0.75,
             radius: 10000 * mag
-          }).bindPopup("<h3>" + features[i].properties.place + "</h3><h3>" + features[i].properties.time + "</h3>");
+          }).bindPopup("<h3>" + features[i].properties.place + "</h3><h3>" + d.setUTCSeconds(features[i].properties.time) + "</h3>");
           
           quakeGroup.push(newCircle);
     }
