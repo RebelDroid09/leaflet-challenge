@@ -47,7 +47,7 @@ function createQuakeMarkers(features){
         lon = features[i].geometry.coordinates[0];
         mag = features[i].properties.mag;
         depth = features[i].geometry.depth;
-
+        
         if (depth <= 10)
         {
             color = depth1;
