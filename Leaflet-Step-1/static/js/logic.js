@@ -111,11 +111,12 @@ function createQuakeMarkers(features){
 function updateLegend()
 {
     document.querySelector(".legend").innerHTML = [
-        "<div class='box depth1'></div><p class='depth1'>-10 - 10</p>",
-        "<div class='box depth2'></div><p class='depth2'>10 - 30</p>",
-        "<div class='box depth3'></div><p class='depth3'>30 - 50</p>",
-        "<div class='box depth4'></div><p class='depth4'>50 - 70</p>",
-        "<div class='box depth5'></div><p class='depth5'>70 - 90</p>",
-        "<div class='box depth6'></div><p class='depth6'>90+</p>"
+        "<string>Depth</strong><br>",
+        "<div><div class='box depth1'></div><p class='nowrap'>-10 - 10</p></div>",
+        "<div><div class='box depth2'></div><p class='nowrap'>10 - 30</p></div>",
+        "<div><div class='box depth3'></div><p class='nowrap'>30 - 50</p></div>",
+        "<div><div class='box depth4'></div><p class='nowrap'>50 - 70</p></div>",
+        "<div><div class='box depth5'></div><p class='nowrap'>70 - 90</p></div>",
+        "<div><div class='box depth6'></div><p class='nowrap'>90+</p></div>"
       ].join("");    
 }
