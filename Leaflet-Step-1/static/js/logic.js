@@ -81,9 +81,9 @@ function createQuakeMarkers(features){
         }
 
         var newCircle = L.circle([lat, lon], {
-            color: mycolor,
+            color: "#000000",
             fillColor: mycolor,
-            fillOpacity: 0.75,
+            fillOpacity: 0.5,
             radius: 10000 * mag
           });
           
