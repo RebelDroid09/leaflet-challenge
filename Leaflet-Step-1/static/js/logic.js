@@ -1,4 +1,4 @@
-var newYorkCoords = [39.83, 98.58];
+var usaCoords = [39.83, -98.58];
 var mapZoomLevel = 5;
 
 var depth1 = '#90ee90';
@@ -10,27 +10,38 @@ var depth6 = '#FF0000';
 
 var earthquakeUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
-d3.json(citiBikeUrl, function(data) {
+d3.json(earthquakeUrl, function(data) {
     createMap(data);
 });
 
 function createMap(data) {
-    var myTileLayer = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-        attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-        tileSize: 512,
+    var myTileLayer = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
         maxZoom: 18,
-        zoomOffset: -1,
-        id: "mapbox/streets-v11",
+        id: "streets-v11",
         accessToken: API_KEY
       });
       
-      var myMap = L.map("map-id", {
-        center: newYorkCoords,
+      
+      var myMap = L.map("mapid", {
+        center: usaCoords,
         zoom: mapZoomLevel
       });
 
+      myTileLayer.addTo(myMap);
+
       var quakeMarkers = createQuakeMarkers(data.features);
 
+      var quakeGroup = L.layerGroup(quakeMarkers);
+
+    var overlayMaps = {
+        "Quake Markers": quakeGroup
+    };
+
+    // Create a layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
+    L.control.layers(null, overlayMaps, {
+        collapsed: false
+    }).addTo(myMap);
 }
 
 function createQuakeMarkers(features){
@@ -39,40 +50,45 @@ function createQuakeMarkers(features){
     var lon;
     var mag;
     var depth;
-    var color;
+    var mycolor;
+    var quakeGroup = [];
 
     for(var i = 0; i < features.length; i++)
     {
         lat = features[i].geometry.coordinates[1];
         lon = features[i].geometry.coordinates[0];
         mag = features[i].properties.mag;
-        depth = features[i].geometry.depth;
+        depth = features[i].geometry.coordinates[2];
         
-        if (depth <= 10)
+        if (depth < 10)
         {
-            color = depth1;
+            mycolor = depth1;
         }
-        else if (depth > 10 && depth <= 30){
-            color = depth2;
+        else if (depth >= 10 && depth < 30){
+            mycolor = depth2;
         }
-        else if (depth > 30 && depth <= 50){
-            color = depth3;
+        else if (depth >= 30 && depth < 50){
+            mycolor = depth3;
         }
-        else if (depth > 50 && depth <= 730){
-            color = depth4;
+        else if (depth >= 50 && depth < 730){
+            mycolor = depth4;
         }
-        else if (depth > 70 && depth <= 90){
-            color = depth5;
+        else if (depth >= 70 && depth < 90){
+            mycolor = depth5;
         }
-        else if (depth > 90){
-            color = depth6;
+        else if (depth >= 90){
+            mycolor = depth6;
         }
 
         var newCircle = L.circle([lat, lon], {
-            color: "#000000",
-            fillColor: color,
+            color: mycolor,
+            fillColor: mycolor,
             fillOpacity: 0.75,
-            radius: 50 * mag
+            radius: 10000 * mag
           });
+          
+          quakeGroup.push(newCircle);
     }
+
+    return quakeGroup;
 }
